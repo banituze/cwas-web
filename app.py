@@ -2018,76 +2018,12 @@ def utility_processor():
         'now': datetime.now
     }
 
-# ============== FOOTER & PUBLIC PAGES ==============
-
-@app.route('/help')
-def help_page():
-    """Help center page."""
-    return render_template('pages/help.html')
-
-
-@app.route('/faq')
-def faq():
-    """FAQ page."""
-    return render_template('pages/faq.html')
-
-
-@app.route('/api-docs')
-def api_docs():
-    """API documentation page."""
-    return render_template('pages/api.html')
-
-
-@app.route('/status')
-def status_page():
-    """System status page."""
-    return render_template('pages/status.html')
-
-
-@app.route('/support', methods=['GET', 'POST'])
-def support_page():
-    """Support contact page."""
-    if request.method == 'POST':
-        flash('Your message has been sent. We will get back to you soon.', 'success')
-        return redirect(url_for('support_page'))
-    return render_template('pages/support.html')
-
-
-@app.route('/about')
-def about():
-    """About page."""
-    return render_template('pages/about.html')
-
-
-@app.route('/contact', methods=['GET'])
-def contact():
-    """Contact page."""
-    return render_template('pages/contact.html')
-
-
-@app.route('/contact', methods=['POST'])
-def contact_submit():
-    """Handle contact form submission."""
-    # Optionally capture form fields; keep behaviour consistent
-    flash('Thank you for your message! We will get back to you soon.', 'success')
-    return redirect(url_for('contact'))
-
-
-@app.route('/privacy')
-def privacy():
-    return render_template('pages/privacy.html')
-
-
-@app.route('/terms')
-def terms():
-    return render_template('pages/terms.html')
-
-
 # ============== MAIN ==============
 
 if __name__ == '__main__':
     with app.app_context():
         init_db()
         create_sample_data()
+    
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=os.environ.get('DEBUG', 'False').lower() == 'true')
