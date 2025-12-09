@@ -6,16 +6,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - CWAS</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root{--primary:#00ff00;--primary-dark:#00cc00;--primary-glow:rgba(0,255,0,0.2);--bg:#0a0a0a;--card:#111;--border:#222;--text:#fff;--muted:#888;--error:#f33}
         *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:40px 20px}
+        body{font-family:'Lexend',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:40px 20px}
         .container{max-width:600px;margin:0 auto}
         .header{text-align:center;margin-bottom:32px}
         .logo{display:inline-flex;align-items:center;gap:12px;margin-bottom:24px}
-        .logo-icon{width:48px;height:48px;background:var(--primary);border-radius:12px;display:flex;align-items:center;justify-content:center}
-        .logo-icon svg{width:28px;height:28px;color:var(--bg)}
+        .logo-icon{width:48px;height:48px;background:var(--primary);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--bg);font-size:24px}
         .logo-text{font-size:28px;font-weight:700;color:var(--primary)}
         .header h1{font-size:24px;margin-bottom:8px}
         .header p{color:var(--muted)}
@@ -23,10 +23,10 @@
         .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
         .form-group{margin-bottom:20px}
         .form-label{display:block;font-size:14px;font-weight:500;margin-bottom:8px;color:var(--muted)}
-        .form-control{width:100%;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;transition:all .2s}
+        .form-control{width:100%;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:'Lexend',sans-serif;transition:all .2s}
         .form-control:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow)}
         select.form-control{cursor:pointer}
-        .btn{width:100%;padding:14px;background:var(--primary);color:var(--bg);border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s}
+        .btn{width:100%;padding:14px;background:var(--primary);color:var(--bg);border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Lexend',sans-serif}
         .btn:hover{background:var(--primary-dark)}
         .footer{text-align:center;margin-top:24px;color:var(--muted);font-size:14px}
         .footer a{color:var(--primary)}
@@ -37,8 +37,8 @@
         .role-option:hover{border-color:var(--primary)}
         .role-option.active{border-color:var(--primary);background:var(--primary-glow)}
         .role-option input{display:none}
-        .role-option svg{width:32px;height:32px;color:var(--muted);margin-bottom:8px}
-        .role-option.active svg{color:var(--primary)}
+        .role-option i{font-size:24px;color:var(--muted);margin-bottom:8px;display:block}
+        .role-option.active i{color:var(--primary)}
         .role-option span{display:block;font-weight:500;font-size:14px}
         .household-fields,.admin-fields{display:none}
         .household-fields.show,.admin-fields.show{display:block}
@@ -49,7 +49,7 @@
     <div class="container">
         <div class="header">
             <a href="{{ url_for('index') }}" class="logo">
-                <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></div>
+                <div class="logo-icon"><i class="fas fa-droplet"></i></div>
                 <span class="logo-text">CWAS</span>
             </a>
             <h1>Create Account</h1>
@@ -65,17 +65,17 @@
                     <div class="role-select">
                         <label class="role-option active" data-role="household">
                             <input type="radio" name="role" value="household" checked>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                            <i class="fas fa-home"></i>
                             <span>Household</span>
                         </label>
                         <label class="role-option" data-role="coordinator">
                             <input type="radio" name="role" value="coordinator">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <i class="fas fa-users-cog"></i>
                             <span>Coordinator</span>
                         </label>
                         <label class="role-option" data-role="admin">
                             <input type="radio" name="role" value="admin">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            <i class="fas fa-shield-alt"></i>
                             <span>Admin</span>
                         </label>
                     </div>
@@ -109,7 +109,7 @@
                     <div class="section-title">Authorization</div>
                     <div class="form-group"><label class="form-label">Registration Code</label><input type="text" name="admin_code" class="form-control" placeholder="Enter authorization code"></div>
                 </div>
-                <button type="submit" class="btn">Create Account</button>
+                <button type="submit" class="btn"><i class="fas fa-user-plus"></i> Create Account</button>
             </form>
         </div>
         <div class="footer">Already have an account? <a href="{{ url_for('login') }}">Sign in here</a></div>
@@ -131,7 +131,7 @@
         document.getElementById('regionSelect').addEventListener('change', function() {
             const districts = regions[this.value] || [];
             const districtSelect = document.getElementById('districtSelect');
-            districtSelect.innerHTML = '<option value="">Select District</option>' + districts.map(d => `<option value="${d}">${d}</option>`).join('');
+            districtSelect.innerHTML = '<option value="">Select District</option>' + districts.map(d => '<option value="' + d + '">' + d + '</option>').join('');
         });
     </script>
 </body>

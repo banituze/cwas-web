@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - CWAS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root{--primary:#00ff00;--bg:#0a0a0a;--card:#111;--border:#222;--text:#fff;--muted:#888}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Lexend',sans-serif;background:var(--bg);color:var(--text);line-height:1.8}
+        a{color:var(--primary);text-decoration:none}
+        .navbar{padding:20px 40px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+        .logo{display:flex;align-items:center;gap:12px}
+        .logo-icon{width:40px;height:40px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--bg)}
+        .logo-text{font-size:24px;font-weight:700;color:var(--primary)}
+        .btn{padding:10px 20px;background:var(--primary);color:var(--bg);border-radius:8px;font-weight:600}
+        .container{max-width:800px;margin:0 auto;padding:60px 20px}
+        h1{font-size:42px;margin-bottom:8px}
+        .updated{color:var(--muted);margin-bottom:40px}
+        h2{font-size:22px;margin:32px 0 16px;color:var(--primary)}
+        p{color:var(--muted);margin-bottom:16px}
+        ul{color:var(--muted);margin-left:24px;margin-bottom:16px}
+        li{margin-bottom:8px}
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="logo"><div class="logo-icon"><i class="fas fa-droplet"></i></div><span class="logo-text">CWAS</span></a>
+        <a href="{{ url_for('login') }}" class="btn">Sign In</a>
+    </nav>
+    <div class="container">
+        <h1>Terms of Service</h1>
+        <p class="updated">Last updated: January 1, 2025</p>
+
+        <h2>1. Acceptance of Terms</h2>
+        <p>By accessing and using CWAS, you agree to be bound by these Terms of Service and all applicable laws and regulations.</p>
+
+        <h2>2. User Accounts</h2>
+        <ul>
+            <li>You must provide accurate information when registering</li>
+            <li>You are responsible for maintaining the security of your account</li>
+            <li>One account per household is permitted</li>
+            <li>Sharing accounts is prohibited</li>
+        </ul>
+
+        <h2>3. Booking Rules</h2>
+        <ul>
+            <li>Bookings must be made in advance through the platform</li>
+            <li>You must arrive at your scheduled time slot</li>
+            <li>Repeated no-shows may result in account restrictions</li>
+            <li>Cancellations should be made at least 2 hours in advance</li>
+        </ul>
+
+        <h2>4. Payments</h2>
+        <ul>
+            <li>Account balance must be sufficient before booking</li>
+            <li>Prices are set per water source and may vary</li>
+            <li>Refunds are processed for cancelled bookings</li>
+        </ul>
+
+        <h2>5. Prohibited Activities</h2>
+        <ul>
+            <li>Misrepresenting household information</li>
+            <li>Reselling water collected through CWAS</li>
+            <li>Attempting to manipulate the scheduling system</li>
+            <li>Harassing coordinators or other users</li>
+        </ul>
+
+        <h2>6. Termination</h2>
+        <p>We reserve the right to suspend or terminate accounts that violate these terms.</p>
+
+        <h2>7. Contact</h2>
+        <p>For questions about these Terms, contact us at legal@cwas.mg.</p>
+    </div>
+</body>
+</html>
