@@ -713,45 +713,22 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer" id="contact">
+    <footer class="footer">
         <div class="footer-content">
             <div class="footer-brand">
                 <div class="nav-logo">
-                    <div class="nav-logo-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
-                        </svg>
-                    </div>
+                    <div class="nav-logo-icon"><i class="fas fa-droplet"></i></div>
                     <span class="nav-logo-text">CWAS</span>
                 </div>
                 <p>Community Water Access Scheduler - Ensuring fair and efficient water distribution for communities across Madagascar.</p>
                 <div class="footer-social">
-                    <a href="https://facebook.com/cwas" class="social-link" target="_blank" rel="noopener">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-                        </svg>
-                    </a>
-                    <a href="https://x.com/cwas" class="social-link" target="_blank" rel="noopener">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                        </svg>
-                    </a>
-                    <a href="https://linkedin.com/company/cwas" class="social-link" target="_blank" rel="noopener">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-                            <rect x="2" y="9" width="4" height="12"/>
-                            <circle cx="4" cy="4" r="2"/>
-                        </svg>
-                    </a>
-                    <a href="mailto:contact@cwas.mg" class="social-link">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                            <polyline points="22,6 12,13 2,6"/>
-                        </svg>
-                    </a>
+                    <a href="https://facebook.com" class="social-link" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com" class="social-link" target="_blank"><i class="fab fa-x-twitter"></i></a>
+                    <a href="https://linkedin.com" class="social-link" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="mailto:contact@cwas.mg" class="social-link"><i class="fas fa-envelope"></i></a>
                 </div>
             </div>
-            <div class="footer-column">
+            <div>
                 <h4 class="footer-title">Platform</h4>
                 <ul class="footer-links">
                     <li><a href="{{ url_for('login') }}">Sign In</a></li>
@@ -760,21 +737,22 @@
                     <li><a href="#how-it-works">How It Works</a></li>
                 </ul>
             </div>
-            <div class="footer-column">
+            <div>
                 <h4 class="footer-title">Resources</h4>
                 <ul class="footer-links">
-                    <li><a href="/help">Help Center</a></li>
-                    <li><a href="/faq">FAQ</a></li>
-                    <li><a href="/api">API Documentation</a></li>
-                    <li><a href="/status">System Status</a></li>
+                    <li><a href="{{ url_for('help_page') }}">Help Center</a></li>
+                    <li><a href="{{ url_for('faq') }}">FAQ</a></li>
+                    <li><a href="{{ url_for('api_docs') }}">API Documentation</a></li>
+                    <li><a href="{{ url_for('status_page') }}">System Status</a></li>
                 </ul>
             </div>
-            <div class="footer-column">
-                <h4 class="footer-title">Contact</h4>
+            <div>
+                <h4 class="footer-title">Company</h4>
                 <ul class="footer-links">
-                    <li><a href="mailto:contact@cwas.mg">contact@cwas.mg</a></li>
-                    <li><a href="tel:+261340000000">+261 34 00 000 00</a></li>
-                    <li><a href="/support">Support</a></li>
+                    <li><a href="{{ url_for('about') }}">About Us</a></li>
+                    <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                    <li><a href="{{ url_for('privacy') }}">Privacy Policy</a></li>
+                    <li><a href="{{ url_for('terms') }}">Terms of Service</a></li>
                 </ul>
             </div>
         </div>
