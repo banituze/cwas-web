@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Reports{% endblock %}
+{% block page_title %}Reports{% endblock %}
+{% block content %}
+<div class="grid grid-3 mb-6">
+    <div class="card" style="cursor:pointer" onclick="loadReport('bookings')"><div class="stat-icon mb-4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/></svg></div><h3>Booking Report</h3><p class="text-muted">View booking statistics</p></div>
+    <div class="card" style="cursor:pointer" onclick="loadReport('revenue')"><div class="stat-icon mb-4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h3>Revenue Report</h3><p class="text-muted">Financial statistics</p></div>
+    <div class="card" style="cursor:pointer" onclick="loadReport('sources')"><div class="stat-icon mb-4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></div><h3>Source Report</h3><p class="text-muted">Source performance</p></div>
+</div>
+<div class="card"><div id="reportContent"><div class="empty-state"><h3>Select a Report</h3></div></div></div>
+<script>
+let currentReport='';
+function loadReport(type){currentReport=type;
+fetch('/api/reports/'+type+'?period=30').then(r=>r.json()).then(data=>{
+let html='<table class="table"><thead><tr>';if(data.length){Object.keys(data[0]).forEach(k=>html+='<th>'+k+'</th>');html+='</tr></thead><tbody>';
+data.forEach(row=>{html+='<tr>';Object.values(row).forEach(v=>html+='<td>'+v+'</td>');html+='</tr>'});html+='</tbody></table>'}else{html='<p>No data</p>'}
+document.getElementById('reportContent').innerHTML=html})}
+</script>
+{% endblock %}

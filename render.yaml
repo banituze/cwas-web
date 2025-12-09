@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: cwas
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ADMIN_REG_CODE
+        value: CWAS_ADMIN_2025
+      - key: COORD_REG_CODE
+        value: CWAS_COORD_2025

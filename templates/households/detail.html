@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ household.household_name }}{% endblock %}
+{% block page_title %}{{ household.household_name }}{% endblock %}
+{% block content %}
+<div class="grid grid-2 mb-6">
+    <div class="card">
+        <h3 class="mb-4">Household Information</h3>
+        <div style="display:grid;gap:12px">
+            <div class="flex justify-between"><span class="text-muted">Contact</span><span>{{ household.first_name }} {{ household.last_name }}</span></div>
+            <div class="flex justify-between"><span class="text-muted">Email</span><span>{{ household.email }}</span></div>
+            <div class="flex justify-between"><span class="text-muted">Phone</span><span>{{ household.phone }}</span></div>
+            <div class="flex justify-between"><span class="text-muted">Location</span><span>{{ household.village }}, {{ household.district }}</span></div>
+            <div class="flex justify-between"><span class="text-muted">Region</span><span>{{ household.region }}</span></div>
+            <div class="flex justify-between"><span class="text-muted">Members</span><span>{{ household.member_count }}</span></div>
+            <div class="flex justify-between"><span class="text-muted">Priority</span><span>Level {{ household.priority_level }}</span></div>
+            <div class="flex justify-between"><span class="text-muted">Registered</span><span>{{ household.user_created_at[:10] }}</span></div>
+        </div>
+    </div>
+    <div class="card">
+        <h3 class="mb-4">Account</h3>
+        <div style="font-size:32px;font-weight:700;color:var(--primary);margin-bottom:8px">{{ "{:,.0f}".format(household.account_balance) }} Ar</div>
+        <p class="text-muted mb-4">Current Balance</p>
+        <form method="POST" action="{{ url_for('add_funds', household_id=household.id) }}" class="flex gap-2">
+            <input type="number" name="amount" class="form-control" placeholder="Amount (Ar)" required min="1000" style="flex:1">
+            <input type="text" name="reference" class="form-control" placeholder="Reference" style="width:150px">
+            <button class="btn btn-primary">Add Funds</button>
+        </form>
+        <div class="mt-4"><strong>Total Water:</strong> {{ "{:,.0f}".format(household.total_water_collected) }}L</div>
+    </div>
+</div>
+<div class="card">
+    <h3 class="mb-4">Recent Bookings</h3>
+    {% if bookings %}<div class="table-container"><table class="table"><thead><tr><th>Date</th><th>Source</th><th>Time</th><th>Liters</th><th>Cost</th><th>Status</th></tr></thead><tbody>{% for b in bookings %}<tr><td>{{ b.booking_date }}</td><td>{{ b.source_name }}</td><td>{{ b.start_time }}</td><td>{{ b.requested_liters }}L</td><td>{{ "{:,.0f}".format(b.estimated_cost) }} Ar</td><td><span class="badge badge-{{ b.status }}">{{ b.status }}</span></td></tr>{% endfor %}</tbody></table></div>{% else %}<p class="text-muted">No bookings</p>{% endif %}
+</div>
+{% endblock %}

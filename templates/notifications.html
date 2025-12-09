@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Notifications{% endblock %}
+{% block page_title %}Notifications{% endblock %}
+{% block content %}
+<div class="card">
+    {% if notifications %}
+    {% for n in notifications %}
+    <div style="padding:16px 0;border-bottom:1px solid var(--border-color);display:flex;gap:16px;align-items:flex-start">
+        <div style="width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:{% if n.type == 'success' %}var(--success-bg){% elif n.type == 'error' %}var(--error-bg){% elif n.type == 'warning' %}var(--warning-bg){% else %}var(--info-bg){% endif %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="{% if n.type == 'success' %}var(--success){% elif n.type == 'error' %}var(--error){% elif n.type == 'warning' %}var(--warning){% else %}var(--info){% endif %}" stroke-width="2" style="width:20px;height:20px">{% if n.type == 'success' %}<polyline points="20 6 9 17 4 12"/>{% elif n.type == 'error' %}<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>{% else %}<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>{% endif %}</svg>
+        </div>
+        <div style="flex:1"><strong>{{ n.title }}</strong><p class="text-muted" style="margin-top:4px">{{ n.message }}</p><small class="text-muted">{{ n.created_at }}</small></div>
+    </div>
+    {% endfor %}
+    {% else %}<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg><h3>No Notifications</h3><p>You're all caught up!</p></div>{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Bookings{% endblock %}
+{% block page_title %}Bookings{% endblock %}
+{% block content %}
+<div class="card mb-6">
+    <form method="GET" class="flex gap-4 items-center" style="flex-wrap:wrap">
+        <select name="status" class="form-control" style="width:auto"><option value="">All Status</option><option value="pending" {% if status_filter=='pending' %}selected{% endif %}>Pending</option><option value="approved" {% if status_filter=='approved' %}selected{% endif %}>Approved</option><option value="completed" {% if status_filter=='completed' %}selected{% endif %}>Completed</option><option value="denied" {% if status_filter=='denied' %}selected{% endif %}>Denied</option><option value="cancelled" {% if status_filter=='cancelled' %}selected{% endif %}>Cancelled</option></select>
+        <input type="date" name="date" class="form-control" style="width:auto" value="{{ date_filter }}">
+        <button class="btn btn-primary">Filter</button>
+        {% if session.role == 'household' %}<a href="{{ url_for('new_booking') }}" class="btn btn-secondary" style="margin-left:auto">New Booking</a>{% endif %}
+    </form>
+</div>
+<div class="card">
+    {% if bookings %}
+    <div class="table-container"><table class="table"><thead><tr>{% if session.role != 'household' %}<th>Household</th>{% endif %}<th>Source</th><th>Date</th><th>Time</th><th>Liters</th><th>Cost</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+    {% for b in bookings %}<tr>{% if session.role != 'household' %}<td>{{ b.household_name }}</td>{% endif %}<td>{{ b.source_name }}</td><td>{{ b.booking_date }}</td><td>{{ b.start_time }} - {{ b.end_time }}</td><td>{{ b.requested_liters }}L</td><td>{{ "{:,.0f}".format(b.estimated_cost) }} Ar</td><td><span class="badge badge-{{ b.status }}">{{ b.status }}</span></td><td>
+    {% if b.status == 'pending' and session.role in ['admin','coordinator'] %}<form method="POST" action="{{ url_for('approve_booking', booking_id=b.id) }}" style="display:inline"><button class="btn btn-sm btn-primary">Approve</button></form>{% endif %}
+    {% if b.status == 'approved' and session.role in ['admin','coordinator'] %}<form method="POST" action="{{ url_for('complete_booking', booking_id=b.id) }}" style="display:inline"><button class="btn btn-sm btn-primary">Complete</button></form>{% endif %}
+    {% if b.status in ['pending','approved'] %}<form method="POST" action="{{ url_for('cancel_booking', booking_id=b.id) }}" style="display:inline"><button class="btn btn-sm btn-danger">Cancel</button></form>{% endif %}
+    </td></tr>{% endfor %}
+    </tbody></table></div>
+    {% else %}<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/></svg><h3>No Bookings Found</h3></div>{% endif %}
+</div>
+{% endblock %}

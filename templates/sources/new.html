@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Add Water Source{% endblock %}
+{% block page_title %}Add Water Source{% endblock %}
+{% block content %}
+<div class="card" style="max-width:700px">
+    <form method="POST">
+        <div class="form-group"><label class="form-label">Source Name</label><input type="text" name="name" class="form-control" required></div>
+        <div class="form-group"><label class="form-label">Source Type</label><select name="source_type" class="form-control" required>{% for t in source_types %}<option value="{{ t.id }}">{{ t.name }}</option>{% endfor %}</select></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div class="form-group"><label class="form-label">Region</label><select name="region" id="regionSelect" class="form-control" required><option value="">Select</option>{% for r in regions %}<option value="{{ r }}">{{ r }}</option>{% endfor %}</select></div>
+            <div class="form-group"><label class="form-label">District</label><select name="district" id="districtSelect" class="form-control" required><option value="">Select region first</option></select></div>
+        </div>
+        <div class="form-group"><label class="form-label">Village/Location</label><input type="text" name="village" class="form-control"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div class="form-group"><label class="form-label">Latitude</label><input type="number" step="0.0001" name="latitude" class="form-control"></div>
+            <div class="form-group"><label class="form-label">Longitude</label><input type="number" step="0.0001" name="longitude" class="form-control"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Capacity (Liters/Day)</label><input type="number" name="capacity" class="form-control" required min="100"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div class="form-group"><label class="form-label">Opening Time</label><input type="time" name="operating_hours_start" class="form-control" value="06:00" required></div>
+            <div class="form-group"><label class="form-label">Closing Time</label><input type="time" name="operating_hours_end" class="form-control" value="18:00" required></div>
+        </div>
+        <div class="form-group"><label class="form-label">Price per Liter (Ar)</label><input type="number" step="0.5" name="price_per_liter" class="form-control" value="5" min="0"></div>
+        <button type="submit" class="btn btn-primary">Create Source</button>
+    </form>
+</div>
+<script>
+const regions={{ regions|tojson }};
+document.getElementById('regionSelect').addEventListener('change',function(){const d=regions[this.value]||[];document.getElementById('districtSelect').innerHTML='<option value="">Select</option>'+d.map(x=>`<option value="${x}">${x}</option>`).join('')});
+</script>
+{% endblock %}

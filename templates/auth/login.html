@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block public_content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - CWAS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root{--primary:#00ff00;--primary-dark:#00cc00;--primary-glow:rgba(0,255,0,0.2);--bg:#0a0a0a;--card:#111;--border:#222;--text:#fff;--muted:#888;--error:#f33}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Lexend',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+        .login-container{width:100%;max-width:420px}
+        .login-header{text-align:center;margin-bottom:32px}
+        .logo{display:inline-flex;align-items:center;gap:12px;margin-bottom:24px}
+        .logo-icon{width:48px;height:48px;background:var(--primary);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--bg);font-size:24px}
+        .logo-text{font-size:28px;font-weight:700;color:var(--primary)}
+        .login-header h1{font-size:24px;margin-bottom:8px}
+        .login-header p{color:var(--muted)}
+        .login-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px}
+        .form-group{margin-bottom:20px}
+        .form-label{display:block;font-size:14px;font-weight:500;margin-bottom:8px;color:var(--muted)}
+        .form-control{width:100%;padding:14px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:15px;font-family:'Lexend',sans-serif;transition:all .2s}
+        .form-control:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow)}
+        .btn{width:100%;padding:14px;background:var(--primary);color:var(--bg);border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Lexend',sans-serif}
+        .btn:hover{background:var(--primary-dark);box-shadow:0 0 30px var(--primary-glow)}
+        .login-footer{text-align:center;margin-top:24px;color:var(--muted);font-size:14px}
+        .login-footer a{color:var(--primary)}
+        .error-msg{background:rgba(255,51,51,.1);border:1px solid var(--error);color:var(--error);padding:12px;border-radius:8px;margin-bottom:20px;font-size:14px;display:flex;align-items:center;gap:8px}
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <a href="{{ url_for('index') }}" class="logo">
+                <div class="logo-icon"><i class="fas fa-droplet"></i></div>
+                <span class="logo-text">CWAS</span>
+            </a>
+            <h1>Welcome Back</h1>
+            <p>Sign in to access your account</p>
+        </div>
+        <div class="login-card">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for cat, msg in messages %}<div class="error-msg"><i class="fas fa-exclamation-circle"></i>{{ msg }}</div>{% endfor %}
+            {% endwith %}
+            <form method="POST">
+                <div class="form-group">
+                    <label class="form-label">Username or Email</label>
+                    <input type="text" name="username" class="form-control" placeholder="Enter username or email" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+            </form>
+        </div>
+        <div class="login-footer">
+            Don't have an account? <a href="{{ url_for('register') }}">Register here</a>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

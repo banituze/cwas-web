@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block public_content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - CWAS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root{--primary:#00ff00;--primary-dark:#00cc00;--primary-glow:rgba(0,255,0,0.2);--bg:#0a0a0a;--card:#111;--border:#222;--text:#fff;--muted:#888;--error:#f33}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Lexend',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:40px 20px}
+        .container{max-width:600px;margin:0 auto}
+        .header{text-align:center;margin-bottom:32px}
+        .logo{display:inline-flex;align-items:center;gap:12px;margin-bottom:24px}
+        .logo-icon{width:48px;height:48px;background:var(--primary);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--bg);font-size:24px}
+        .logo-text{font-size:28px;font-weight:700;color:var(--primary)}
+        .header h1{font-size:24px;margin-bottom:8px}
+        .header p{color:var(--muted)}
+        .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px}
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        .form-group{margin-bottom:20px}
+        .form-label{display:block;font-size:14px;font-weight:500;margin-bottom:8px;color:var(--muted)}
+        .form-control{width:100%;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;font-family:'Lexend',sans-serif;transition:all .2s}
+        .form-control:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow)}
+        select.form-control{cursor:pointer}
+        .btn{width:100%;padding:14px;background:var(--primary);color:var(--bg);border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Lexend',sans-serif}
+        .btn:hover{background:var(--primary-dark)}
+        .footer{text-align:center;margin-top:24px;color:var(--muted);font-size:14px}
+        .footer a{color:var(--primary)}
+        .error-msg{background:rgba(255,51,51,.1);border:1px solid var(--error);color:var(--error);padding:12px;border-radius:8px;margin-bottom:20px;font-size:14px}
+        .section-title{font-size:16px;font-weight:600;margin:24px 0 16px;padding-top:16px;border-top:1px solid var(--border)}
+        .role-select{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+        .role-option{padding:16px;background:var(--bg);border:2px solid var(--border);border-radius:8px;text-align:center;cursor:pointer;transition:all .2s}
+        .role-option:hover{border-color:var(--primary)}
+        .role-option.active{border-color:var(--primary);background:var(--primary-glow)}
+        .role-option input{display:none}
+        .role-option i{font-size:24px;color:var(--muted);margin-bottom:8px;display:block}
+        .role-option.active i{color:var(--primary)}
+        .role-option span{display:block;font-weight:500;font-size:14px}
+        .household-fields,.admin-fields{display:none}
+        .household-fields.show,.admin-fields.show{display:block}
+        @media(max-width:600px){.form-row{grid-template-columns:1fr}.role-select{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="{{ url_for('index') }}" class="logo">
+                <div class="logo-icon"><i class="fas fa-droplet"></i></div>
+                <span class="logo-text">CWAS</span>
+            </a>
+            <h1>Create Account</h1>
+            <p>Register to start booking water collection</p>
+        </div>
+        <div class="card">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for cat, msg in messages %}<div class="error-msg">{{ msg }}</div>{% endfor %}
+            {% endwith %}
+            <form method="POST" id="registerForm">
+                <div class="form-group">
+                    <label class="form-label">Account Type</label>
+                    <div class="role-select">
+                        <label class="role-option active" data-role="household">
+                            <input type="radio" name="role" value="household" checked>
+                            <i class="fas fa-home"></i>
+                            <span>Household</span>
+                        </label>
+                        <label class="role-option" data-role="coordinator">
+                            <input type="radio" name="role" value="coordinator">
+                            <i class="fas fa-users-cog"></i>
+                            <span>Coordinator</span>
+                        </label>
+                        <label class="role-option" data-role="admin">
+                            <input type="radio" name="role" value="admin">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Admin</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label class="form-label">First Name</label><input type="text" name="first_name" class="form-control" required></div>
+                    <div class="form-group"><label class="form-label">Last Name</label><input type="text" name="last_name" class="form-control" required></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label class="form-label">Username</label><input type="text" name="username" class="form-control" required></div>
+                    <div class="form-group"><label class="form-label">Email</label><input type="email" name="email" class="form-control" required></div>
+                </div>
+                <div class="form-group"><label class="form-label">Phone</label><input type="tel" name="phone" class="form-control" placeholder="+261 34 00 000 00"></div>
+                <div class="form-row">
+                    <div class="form-group"><label class="form-label">Password</label><input type="password" name="password" class="form-control" required minlength="6"></div>
+                    <div class="form-group"><label class="form-label">Confirm Password</label><input type="password" name="confirm_password" class="form-control" required></div>
+                </div>
+                <div class="household-fields show">
+                    <div class="section-title">Household Information</div>
+                    <div class="form-group"><label class="form-label">Household Name</label><input type="text" name="household_name" class="form-control" placeholder="e.g., Fianakaviana Rakoto"></div>
+                    <div class="form-row">
+                        <div class="form-group"><label class="form-label">Region</label><select name="region" class="form-control" id="regionSelect"><option value="">Select Region</option>{% for r in regions %}<option value="{{ r }}">{{ r }}</option>{% endfor %}</select></div>
+                        <div class="form-group"><label class="form-label">District</label><select name="district" class="form-control" id="districtSelect"><option value="">Select District</option></select></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label class="form-label">Village/Fokontany</label><input type="text" name="village" class="form-control"></div>
+                        <div class="form-group"><label class="form-label">Household Members</label><input type="number" name="member_count" class="form-control" value="1" min="1" max="20"></div>
+                    </div>
+                </div>
+                <div class="admin-fields">
+                    <div class="section-title">Authorization</div>
+                    <div class="form-group"><label class="form-label">Registration Code</label><input type="text" name="admin_code" class="form-control" placeholder="Enter authorization code"></div>
+                </div>
+                <button type="submit" class="btn"><i class="fas fa-user-plus"></i> Create Account</button>
+            </form>
+        </div>
+        <div class="footer">Already have an account? <a href="{{ url_for('login') }}">Sign in here</a></div>
+    </div>
+    <script>
+        const regions = {{ regions|tojson }};
+        const roleOptions = document.querySelectorAll('.role-option');
+        const householdFields = document.querySelector('.household-fields');
+        const adminFields = document.querySelector('.admin-fields');
+        roleOptions.forEach(opt => {
+            opt.addEventListener('click', () => {
+                roleOptions.forEach(o => o.classList.remove('active'));
+                opt.classList.add('active');
+                const role = opt.dataset.role;
+                householdFields.classList.toggle('show', role === 'household');
+                adminFields.classList.toggle('show', role === 'admin' || role === 'coordinator');
+            });
+        });
+        document.getElementById('regionSelect').addEventListener('change', function() {
+            const districts = regions[this.value] || [];
+            const districtSelect = document.getElementById('districtSelect');
+            districtSelect.innerHTML = '<option value="">Select District</option>' + districts.map(d => '<option value="' + d + '">' + d + '</option>').join('');
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

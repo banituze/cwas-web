@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard{% endblock %}
+{% block page_title %}Welcome, {{ household.first_name }}{% endblock %}
+{% block content %}
+<div class="stats-grid">
+    <div class="stat-card"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="stat-content"><div class="stat-value">{{ "{:,.0f}".format(household.account_balance) }} Ar</div><div class="stat-label">Account Balance</div></div></div>
+    <div class="stat-card"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></div><div class="stat-content"><div class="stat-value">{{ "{:,.0f}".format(household.total_water_collected) }} L</div><div class="stat-label">Total Water Collected</div></div></div>
+    <div class="stat-card"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/></svg></div><div class="stat-content"><div class="stat-value">{{ stats.pending_bookings }}</div><div class="stat-label">Pending Bookings</div></div></div>
+    <div class="stat-card"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div class="stat-content"><div class="stat-value">{{ stats.completed_bookings }}</div><div class="stat-label">Completed</div></div></div>
+</div>
+<div class="grid grid-2">
+    <div class="card">
+        <div class="card-header"><h3 class="card-title">Upcoming Bookings</h3><a href="{{ url_for('new_booking') }}" class="btn btn-sm btn-primary">New Booking</a></div>
+        {% if upcoming %}<div class="table-container"><table class="table"><thead><tr><th>Date</th><th>Source</th><th>Time</th><th>Status</th></tr></thead><tbody>
+        {% for b in upcoming %}<tr><td>{{ b.booking_date }}</td><td>{{ b.source_name }}</td><td>{{ b.start_time }}</td><td><span class="badge badge-{{ b.status }}">{{ b.status }}</span></td></tr>{% endfor %}
+        </tbody></table></div>{% else %}<div class="empty-state"><p>No upcoming bookings</p><a href="{{ url_for('new_booking') }}" class="btn btn-primary mt-4">Book Now</a></div>{% endif %}
+    </div>
+    <div class="card">
+        <div class="card-header"><h3 class="card-title">Nearby Sources</h3><a href="{{ url_for('sources_list') }}" class="btn btn-sm btn-secondary">View All</a></div>
+        {% for s in sources %}<div style="padding:12px 0;border-bottom:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center"><div><strong>{{ s.name }}</strong><br><span class="text-muted" style="font-size:13px">{{ s.district }} - {{ s.operating_hours_start }} to {{ s.operating_hours_end }}</span></div><span class="badge badge-{{ s.status }}">{{ s.status }}</span></div>{% endfor %}
+    </div>
+</div>
+{% endblock %}

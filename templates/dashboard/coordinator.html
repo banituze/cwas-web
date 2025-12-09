@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Coordinator Dashboard{% endblock %}
+{% block page_title %}Coordinator Dashboard{% endblock %}
+{% block content %}
+<div class="stats-grid">
+    <div class="stat-card"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="stat-content"><div class="stat-value">{{ stats.pending_count }}</div><div class="stat-label">Pending Approvals</div></div></div>
+    <div class="stat-card"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/></svg></div><div class="stat-content"><div class="stat-value">{{ stats.today_count }}</div><div class="stat-label">Today's Bookings</div></div></div>
+    <div class="stat-card"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></div><div class="stat-content"><div class="stat-value">{{ stats.sources_count }}</div><div class="stat-label">Active Sources</div></div></div>
+    <div class="stat-card"><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div class="stat-content"><div class="stat-value">{{ stats.completed_today }}</div><div class="stat-label">Completed Today</div></div></div>
+</div>
+<div class="card mb-6">
+    <div class="card-header"><h3 class="card-title">Pending Approvals</h3></div>
+    {% if pending_bookings %}
+    <div class="table-container"><table class="table"><thead><tr><th>Household</th><th>Source</th><th>Date</th><th>Time</th><th>Liters</th><th>Actions</th></tr></thead><tbody>
+    {% for b in pending_bookings %}<tr><td>{{ b.household_name }}</td><td>{{ b.source_name }}</td><td>{{ b.booking_date }}</td><td>{{ b.start_time }}</td><td>{{ b.requested_liters }}L</td><td class="flex gap-2"><form method="POST" action="{{ url_for('approve_booking', booking_id=b.id) }}" style="display:inline"><button class="btn btn-sm btn-primary">Approve</button></form><form method="POST" action="{{ url_for('deny_booking', booking_id=b.id) }}" style="display:inline"><button class="btn btn-sm btn-danger">Deny</button></form></td></tr>{% endfor %}
+    </tbody></table></div>
+    {% else %}<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><h3>No Pending Approvals</h3><p>All bookings have been processed</p></div>{% endif %}
+</div>
+{% endblock %}

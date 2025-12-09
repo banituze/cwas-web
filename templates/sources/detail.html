@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ source.name }}{% endblock %}
+{% block page_title %}{{ source.name }}{% endblock %}
+{% block content %}
+<div class="grid grid-2 mb-6">
+    <div class="card">
+        <div class="flex justify-between items-center mb-4"><h3>Source Details</h3><span class="badge badge-{{ source.status }}">{{ source.status }}</span></div>
+        <div style="display:grid;gap:12px">
+            <div class="flex justify-between"><span class="text-muted">Type</span><span>{{ source.source_type }}</span></div>
+            <div class="flex justify-between"><span class="text-muted">Location</span><span>{{ source.village }}, {{ source.district }}</span></div>
+            <div class="flex justify-between"><span class="text-muted">Region</span><span>{{ source.region }}</span></div>
+            <div class="flex justify-between"><span class="text-muted">Capacity</span><span>{{ "{:,}".format(source.capacity_liters) }}L/day</span></div>
+            <div class="flex justify-between"><span class="text-muted">Hours</span><span>{{ source.operating_hours_start }} - {{ source.operating_hours_end }}</span></div>
+            <div class="flex justify-between"><span class="text-muted">Price</span><span>{{ source.price_per_liter }} Ar/L</span></div>
+            <div class="flex justify-between"><span class="text-muted">Health Score</span><span style="color:{% if source.health_score >= 80 %}var(--success){% else %}var(--warning){% endif %}">{{ source.health_score }}%</span></div>
+        </div>
+        {% if session.role in ['admin','coordinator'] %}<div class="mt-6 flex gap-2"><a href="{{ url_for('edit_source', source_id=source.id) }}" class="btn btn-secondary">Edit</a><form method="POST" action="{{ url_for('generate_slots', source_id=source.id) }}"><input type="hidden" name="days" value="14"><button class="btn btn-primary">Generate Slots</button></form></div>{% endif %}
+    </div>
+    <div class="card">
+        <h3 class="mb-4">Statistics</h3>
+        <div class="stats-grid" style="grid-template-columns:1fr 1fr">
+            <div class="stat-card"><div class="stat-content"><div class="stat-value">{{ stats.total_bookings }}</div><div class="stat-label">Total Bookings</div></div></div>
+            <div class="stat-card"><div class="stat-content"><div class="stat-value">{{ stats.completed_bookings }}</div><div class="stat-label">Completed</div></div></div>
+            <div class="stat-card"><div class="stat-content"><div class="stat-value">{{ "{:,.0f}".format(stats.total_water) }}L</div><div class="stat-label">Water Distributed</div></div></div>
+            <div class="stat-card"><div class="stat-content"><div class="stat-value">{{ "{:,.0f}".format(stats.total_revenue) }} Ar</div><div class="stat-label">Revenue</div></div></div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <h3 class="mb-4">Recent Bookings</h3>
+    {% if bookings %}<div class="table-container"><table class="table"><thead><tr><th>Household</th><th>Date</th><th>Time</th><th>Liters</th><th>Status</th></tr></thead><tbody>{% for b in bookings %}<tr><td>{{ b.household_name }}</td><td>{{ b.booking_date }}</td><td>{{ b.start_time }}</td><td>{{ b.requested_liters }}L</td><td><span class="badge badge-{{ b.status }}">{{ b.status }}</span></td></tr>{% endfor %}</tbody></table></div>{% else %}<p class="text-muted">No bookings yet</p>{% endif %}
+</div>
+{% endblock %}

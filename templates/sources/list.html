@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Water Sources{% endblock %}
+{% block page_title %}Water Sources{% endblock %}
+{% block content %}
+<div class="card mb-6">
+    <form method="GET" class="flex gap-4 items-center" style="flex-wrap:wrap">
+        <select name="region" class="form-control" style="width:auto"><option value="">All Regions</option>{% for r in regions %}<option value="{{ r }}" {% if region_filter==r %}selected{% endif %}>{{ r }}</option>{% endfor %}</select>
+        <select name="type" class="form-control" style="width:auto"><option value="">All Types</option>{% for t in source_types %}<option value="{{ t.id }}" {% if type_filter==t.id %}selected{% endif %}>{{ t.name }}</option>{% endfor %}</select>
+        <select name="status" class="form-control" style="width:auto"><option value="">All Status</option><option value="active" {% if status_filter=='active' %}selected{% endif %}>Active</option><option value="maintenance" {% if status_filter=='maintenance' %}selected{% endif %}>Maintenance</option><option value="inactive" {% if status_filter=='inactive' %}selected{% endif %}>Inactive</option></select>
+        <button class="btn btn-primary">Filter</button>
+        {% if session.role in ['admin','coordinator'] %}<a href="{{ url_for('new_source') }}" class="btn btn-secondary" style="margin-left:auto">Add Source</a>{% endif %}
+    </form>
+</div>
+<div class="grid grid-3">
+{% for s in sources %}
+<div class="card" style="cursor:pointer" onclick="location.href='{{ url_for('source_detail', source_id=s.id) }}'">
+    <div class="flex justify-between items-center mb-4"><span class="badge badge-{{ s.status }}">{{ s.status }}</span><span style="font-size:13px;color:var(--text-muted)">{{ s.source_type }}</span></div>
+    <h3 style="font-size:18px;margin-bottom:8px">{{ s.name }}</h3>
+    <p class="text-muted" style="font-size:14px;margin-bottom:16px">{{ s.district }}, {{ s.region }}</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px">
+        <div><span class="text-muted">Capacity</span><br><strong>{{ "{:,}".format(s.capacity_liters) }}L</strong></div>
+        <div><span class="text-muted">Price</span><br><strong>{{ s.price_per_liter }} Ar/L</strong></div>
+        <div><span class="text-muted">Hours</span><br><strong>{{ s.operating_hours_start }}-{{ s.operating_hours_end }}</strong></div>
+        <div><span class="text-muted">Health</span><br><strong style="color:{% if s.health_score >= 80 %}var(--success){% elif s.health_score >= 50 %}var(--warning){% else %}var(--error){% endif %}">{{ s.health_score }}%</strong></div>
+    </div>
+</div>
+{% endfor %}
+</div>
+{% if not sources %}<div class="card"><div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg><h3>No Sources Found</h3></div></div>{% endif %}
+{% endblock %}

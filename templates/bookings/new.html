@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}New Booking{% endblock %}
+{% block page_title %}New Booking{% endblock %}
+{% block content %}
+<div class="card" style="max-width:700px">
+    <form method="POST" id="bookingForm">
+        <div class="form-group"><label class="form-label">Select Date</label><select name="booking_date" id="dateSelect" class="form-control" required><option value="">Choose a date</option>{% for d in dates %}<option value="{{ d.value }}">{{ d.display }}</option>{% endfor %}</select></div>
+        <div class="form-group"><label class="form-label">Water Source</label><select name="source_id" id="sourceSelect" class="form-control" required><option value="">Choose a source</option>{% for s in sources %}<option value="{{ s.id }}" data-price="{{ s.price_per_liter }}">{{ s.name }} ({{ s.district }}) - {{ s.price_per_liter }} Ar/L</option>{% endfor %}</select></div>
+        <div class="form-group"><label class="form-label">Time Slot</label><select name="slot_id" id="slotSelect" class="form-control" required><option value="">Select date and source first</option></select></div>
+        <div class="form-group"><label class="form-label">Liters Requested</label><input type="number" name="requested_liters" id="litersInput" class="form-control" min="1" max="200" value="20" required></div>
+        <div class="form-group"><label class="form-label">Estimated Cost</label><div id="costDisplay" style="font-size:24px;font-weight:700;color:var(--primary)">0 Ar</div><small class="text-muted">Your balance: {{ "{:,.0f}".format(household.account_balance) }} Ar</small></div>
+        <div class="form-group"><label class="form-label">Notes (Optional)</label><textarea name="notes" class="form-control" rows="2"></textarea></div>
+        <button type="submit" class="btn btn-primary">Create Booking</button>
+    </form>
+</div>
+<script>
+const dateSelect=document.getElementById('dateSelect'),sourceSelect=document.getElementById('sourceSelect'),slotSelect=document.getElementById('slotSelect'),litersInput=document.getElementById('litersInput'),costDisplay=document.getElementById('costDisplay');
+function loadSlots(){const date=dateSelect.value,source=sourceSelect.value;if(!date||!source){slotSelect.innerHTML='<option value="">Select date and source first</option>';return}
+fetch(`/api/slots/${date}/${source}`).then(r=>r.json()).then(slots=>{if(slots.length){slotSelect.innerHTML='<option value="">Choose time</option>'+slots.map(s=>`<option value="${s.id}">${s.start_time} - ${s.end_time} (${s.max_capacity-s.booked_count} spots)</option>`).join('')}else{slotSelect.innerHTML='<option value="">No slots available</option>'}})}
+function updateCost(){const opt=sourceSelect.options[sourceSelect.selectedIndex];const price=opt?parseFloat(opt.dataset.price)||0:0;costDisplay.textContent=(price*litersInput.value).toLocaleString()+' Ar'}
+dateSelect.addEventListener('change',loadSlots);sourceSelect.addEventListener('change',()=>{loadSlots();updateCost()});litersInput.addEventListener('input',updateCost);
+</script>
+{% endblock %}

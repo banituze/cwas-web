@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block page_title %}My Profile{% endblock %}
+{% block content %}
+<div class="grid grid-2">
+    <div class="card">
+        <h3 class="mb-4">Profile Information</h3>
+        <form method="POST"><input type="hidden" name="action" value="update_profile">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                <div class="form-group"><label class="form-label">First Name</label><input type="text" name="first_name" class="form-control" value="{{ user.first_name }}" required></div>
+                <div class="form-group"><label class="form-label">Last Name</label><input type="text" name="last_name" class="form-control" value="{{ user.last_name }}" required></div>
+            </div>
+            <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-control" value="{{ user.email }}" disabled></div>
+            <div class="form-group"><label class="form-label">Phone</label><input type="tel" name="phone" class="form-control" value="{{ user.phone }}"></div>
+            {% if household %}<div class="form-group"><label class="form-label">Household Members</label><input type="number" name="member_count" class="form-control" value="{{ household.member_count }}" min="1"></div>
+            <div class="form-group"><label class="form-label">Village</label><input type="text" name="village" class="form-control" value="{{ household.village }}"></div>{% endif %}
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+        </form>
+    </div>
+    <div class="card">
+        <h3 class="mb-4">Change Password</h3>
+        <form method="POST"><input type="hidden" name="action" value="change_password">
+            <div class="form-group"><label class="form-label">Current Password</label><input type="password" name="current_password" class="form-control" required></div>
+            <div class="form-group"><label class="form-label">New Password</label><input type="password" name="new_password" class="form-control" required minlength="6"></div>
+            <div class="form-group"><label class="form-label">Confirm New Password</label><input type="password" name="confirm_password" class="form-control" required></div>
+            <button type="submit" class="btn btn-primary">Change Password</button>
+        </form>
+        {% if household %}<div class="mt-6" style="padding-top:24px;border-top:1px solid var(--border-color)"><h4 class="mb-4">Account Balance</h4><div style="font-size:28px;font-weight:700;color:var(--primary)">{{ "{:,.0f}".format(household.account_balance) }} Ar</div><p class="text-muted mt-2">Contact a coordinator to add funds</p></div>{% endif %}
+    </div>
+</div>
+{% if transactions %}<div class="card mt-6"><h3 class="mb-4">Recent Transactions</h3><div class="table-container"><table class="table"><thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Description</th></tr></thead><tbody>{% for t in transactions %}<tr><td>{{ t.created_at[:10] }}</td><td><span class="badge badge-{% if t.type == 'deposit' %}approved{% else %}pending{% endif %}">{{ t.type }}</span></td><td style="color:{% if t.amount > 0 %}var(--success){% else %}var(--error){% endif %}">{% if t.amount > 0 %}+{% endif %}{{ "{:,.0f}".format(t.amount) }} Ar</td><td>{{ t.description }}</td></tr>{% endfor %}</tbody></table></div></div>{% endif %}
+{% endblock %}
