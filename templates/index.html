@@ -13,21 +13,127 @@
     <style>
         :root { --primary: #00ff00; --primary-dark: #00cc00; --primary-glow: rgba(0, 255, 0, 0.2); --bg: #0a0a0a; --card: #111111; --border: #222222; --text: #ffffff; --muted: #888888; --error: #ff3333; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Lexend', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+        body { font-family: 'Lexend', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
         a { color: var(--primary); text-decoration: none; }
-        .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 40px; display: flex; align-items: center; justify-content: space-between; background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+        
+        /* Navbar Styles */
+        .navbar { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            z-index: 1000; 
+            padding: 20px 40px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            background: rgba(10, 10, 10, 0.95); 
+            backdrop-filter: blur(10px); 
+            border-bottom: 1px solid var(--border); 
+        }
         .nav-logo { display: flex; align-items: center; gap: 12px; }
         .nav-logo-icon { width: 40px; height: 40px; background: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--bg); font-size: 18px; }
         .nav-logo-text { font-size: 24px; font-weight: 700; color: var(--primary); }
+        
+        /* Desktop Navigation */
         .nav-links { display: flex; align-items: center; gap: 32px; }
         .nav-link { color: var(--muted); font-weight: 500; transition: color 0.2s; }
         .nav-link:hover { color: var(--primary); }
         .nav-actions { display: flex; align-items: center; gap: 16px; }
+        
+        /* Mobile Menu Toggle */
+        .menu-toggle { 
+            display: none; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            width: 30px; 
+            height: 21px; 
+            background: transparent; 
+            border: none; 
+            cursor: pointer; 
+            padding: 0; 
+            z-index: 1001;
+        }
+        .menu-toggle span { 
+            display: block; 
+            width: 100%; 
+            height: 3px; 
+            background-color: var(--text); 
+            border-radius: 3px; 
+            transition: all 0.3s ease-in-out;
+        }
+        .menu-toggle.active span:nth-child(1) { 
+            transform: translateY(9px) rotate(45deg); 
+        }
+        .menu-toggle.active span:nth-child(2) { 
+            opacity: 0; 
+        }
+        .menu-toggle.active span:nth-child(3) { 
+            transform: translateY(-9px) rotate(-45deg); 
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu { 
+            position: fixed; 
+            top: 0; 
+            right: -100%; 
+            width: 300px; 
+            height: 100vh; 
+            background: var(--card); 
+            padding: 100px 40px 40px; 
+            transition: right 0.3s ease-in-out; 
+            z-index: 999; 
+            border-left: 1px solid var(--border);
+            overflow-y: auto;
+        }
+        .mobile-menu.active { 
+            right: 0; 
+        }
+        .mobile-nav-links { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 24px; 
+            margin-bottom: 40px;
+        }
+        .mobile-nav-link { 
+            color: var(--text); 
+            font-size: 18px; 
+            font-weight: 500; 
+            padding: 12px 0; 
+            border-bottom: 1px solid var(--border); 
+        }
+        .mobile-nav-actions { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 16px; 
+            margin-top: 40px;
+        }
+        .menu-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0, 0, 0, 0.7); 
+            backdrop-filter: blur(4px); 
+            z-index: 998; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: all 0.3s ease-in-out;
+        }
+        .menu-overlay.active { 
+            opacity: 1; 
+            visibility: visible; 
+        }
+        
+        /* Common Styles */
         .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 8px; font-weight: 600; transition: all 0.2s; border: none; cursor: pointer; font-size: 14px; font-family: 'Lexend', sans-serif; }
         .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
         .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
         .btn-primary { background: var(--primary); color: var(--bg-dark); }
         .btn-primary:hover { background: var(--bg); box-shadow: 0 0 30px var(--primary-glow); }
+        
+        /* Hero Section */
         .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 120px 40px 80px; position: relative; }
         .hero-bg { position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, var(--primary-glow) 0%, transparent 50%); opacity: 0.5; }
         .hero-content { max-width: 900px; text-align: center; position: relative; z-index: 1; }
@@ -39,6 +145,8 @@
         .hero-stat { text-align: center; }
         .hero-stat-value { font-size: 36px; font-weight: 700; color: var(--primary); }
         .hero-stat-label { font-size: 14px; color: var(--muted); margin-top: 4px; }
+        
+        /* Features Section */
         .features { padding: 100px 40px; background: var(--card); }
         .section-header { text-align: center; max-width: 600px; margin: 0 auto 60px; }
         .section-label { display: inline-block; padding: 6px 12px; background: var(--primary-glow); color: var(--primary); border-radius: 4px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
@@ -50,15 +158,21 @@
         .feature-icon { width: 56px; height: 56px; background: var(--primary-glow); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; color: var(--primary); font-size: 24px; }
         .feature-title { font-size: 18px; font-weight: 600; margin-bottom: 12px; }
         .feature-desc { color: var(--muted); font-size: 14px; }
+        
+        /* How It Works Section */
         .how-it-works { padding: 100px 40px; }
         .steps { display: flex; justify-content: center; gap: 40px; max-width: 1000px; margin: 0 auto; }
         .step { flex: 1; text-align: center; }
         .step-number { width: 80px; height: 80px; background: var(--card); border: 2px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 32px; font-weight: 700; color: var(--primary); }
         .step-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
         .step-desc { color: var(--muted); font-size: 14px; }
+        
+        /* CTA Section */
         .cta { padding: 100px 40px; background: var(--card); text-align: center; }
         .cta-title { font-size: 36px; font-weight: 700; margin-bottom: 16px; }
         .cta-desc { color: var(--muted); font-size: 16px; margin-bottom: 32px; }
+        
+        /* Footer */
         .footer { padding: 60px 40px 30px; border-top: 1px solid var(--border); }
         .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; }
         .footer-brand p { color: var(--muted); margin-top: 16px; font-size: 14px; }
@@ -71,27 +185,80 @@
         .social-link { width: 40px; height: 40px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--muted); transition: all 0.2s; }
         .social-link:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-glow); }
         .footer-bottom { max-width: 1200px; margin: 40px auto 0; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; color: var(--muted); font-size: 14px; }
-        @media (max-width: 1024px) { .features-grid { grid-template-columns: repeat(2, 1fr); } .footer-content { grid-template-columns: 1fr 1fr; } }
-        @media (max-width: 768px) { .navbar { padding: 16px 20px; } .nav-links { display: none; } .hero { padding: 100px 20px 60px; } .hero-title { font-size: 36px; } .hero-stats { flex-direction: column; gap: 30px; } .features-grid { grid-template-columns: 1fr; } .steps { flex-direction: column; } .footer-content { grid-template-columns: 1fr; gap: 40px; } }
+        
+        /* Responsive Styles */
+        @media (max-width: 1024px) { 
+            .features-grid { grid-template-columns: repeat(2, 1fr); } 
+            .footer-content { grid-template-columns: 1fr 1fr; } 
+        }
+        
+        @media (max-width: 768px) { 
+            .navbar { padding: 16px 20px; } 
+            .nav-links, .nav-actions { display: none; } 
+            .menu-toggle { display: flex; } 
+            .hero { padding: 100px 20px 60px; } 
+            .hero-title { font-size: 36px; } 
+            .hero-stats { flex-direction: column; gap: 30px; } 
+            .features-grid { grid-template-columns: 1fr; } 
+            .steps { flex-direction: column; } 
+            .footer-content { grid-template-columns: 1fr; gap: 40px; } 
+        }
+        
+        @media (max-width: 480px) { 
+            .hero-title { font-size: 28px; } 
+            .section-title { font-size: 28px; } 
+            .cta-title { font-size: 28px; } 
+            .hero-actions { flex-direction: column; width: 100%; } 
+            .btn { width: 100%; justify-content: center; } 
+            .mobile-menu { width: 100%; } 
+        }
     </style>
 </head>
 <body>
+    <!-- Navbar -->
     <nav class="navbar">
         <div class="nav-logo">
             <div class="nav-logo-icon"><i class="fas fa-droplet"></i></div>
             <span class="nav-logo-text">CWAS</span>
         </div>
+        
+        <!-- Desktop Navigation -->
         <div class="nav-links">
             <a href="#features" class="nav-link">Features</a>
             <a href="#how-it-works" class="nav-link">How It Works</a>
             <a href="{{ url_for('about') }}" class="nav-link">About</a>
             <a href="{{ url_for('contact') }}" class="nav-link">Contact</a>
         </div>
+        
         <div class="nav-actions">
             <a href="{{ url_for('login') }}" class="btn btn-outline">Sign In</a>
             <a href="{{ url_for('register') }}" class="btn btn-primary">Get Started</a>
         </div>
+        
+        <!-- Mobile Menu Toggle -->
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </nav>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-nav-links">
+            <a href="#features" class="mobile-nav-link" onclick="closeMobileMenu()">Features</a>
+            <a href="#how-it-works" class="mobile-nav-link" onclick="closeMobileMenu()">How It Works</a>
+            <a href="{{ url_for('about') }}" class="mobile-nav-link" onclick="closeMobileMenu()">About</a>
+            <a href="{{ url_for('contact') }}" class="mobile-nav-link" onclick="closeMobileMenu()">Contact</a>
+        </div>
+        <div class="mobile-nav-actions">
+            <a href="{{ url_for('login') }}" class="btn btn-outline" onclick="closeMobileMenu()">Sign In</a>
+            <a href="{{ url_for('register') }}" class="btn btn-primary" onclick="closeMobileMenu()">Get Started</a>
+        </div>
+    </div>
 
     <section class="hero">
         <div class="hero-bg"></div>
@@ -194,6 +361,60 @@
             <p>&copy; 2025 CWAS. Built for communities worldwide.</p>
         </div>
     </footer>
+
+    <script>
+        // Mobile Menu Functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+        
+        function toggleMobileMenu() {
+            menuToggle.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        }
+        
+        function closeMobileMenu() {
+            menuToggle.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        menuToggle.addEventListener('click', toggleMobileMenu);
+        menuOverlay.addEventListener('click', closeMobileMenu);
+        
+        // Close menu when clicking escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeMobileMenu();
+            }
+        });
+        
+        // Close menu when clicking on anchor links
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    closeMobileMenu();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
 {% endblock %}
